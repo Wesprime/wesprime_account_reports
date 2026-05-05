@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wesprime_aged_partner_balance_wizard_form" model="ir.ui.view">
+        <field name="name">wesprime.aged.partner.balance.wizard.form</field>
+        <field name="model">wesprime.aged.partner.balance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Aged Partner Balance">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="as_of_date"/>
+                            <field name="account_type"/>
+                            <field name="target_move"/>
+                        </group>
+                        <group>
+                            <field name="partner_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_view" string="View" type="object" class="btn-primary"/>
+                    <button name="action_print_pdf" string="Print PDF" type="object" class="btn-secondary"/>
+                    <button name="action_print_xlsx" string="Print Excel" type="object" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_wesprime_aged_partner_balance_line_tree" model="ir.ui.view">
+        <field name="name">wesprime.aged.partner.balance.line.tree</field>
+        <field name="model">wesprime.aged.partner.balance.line</field>
+        <field name="arch" type="xml">
+            <tree string="Aged Partner Balance" create="false" edit="false">
+                <field name="currency_id" invisible="1"/>
+                <field name="partner_id"/>
+                <field name="not_due" sum="Total Not Due"/>
+                <field name="age_1_30" sum="Total 1-30"/>
+                <field name="age_31_60" sum="Total 31-60"/>
+                <field name="age_61_90" sum="Total 61-90"/>
+                <field name="age_91_120" sum="Total 91-120"/>
+                <field name="older" sum="Total Older"/>
+                <field name="total" sum="Grand Total"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_wesprime_aged_partner_balance_line_form" model="ir.ui.view">
+        <field name="name">wesprime.aged.partner.balance.line.form</field>
+        <field name="model">wesprime.aged.partner.balance.line</field>
+        <field name="arch" type="xml">
+            <form string="Aged Partner Balance Line" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="partner_id"/>
+                        <field name="not_due"/>
+                        <field name="age_1_30"/>
+                        <field name="age_31_60"/>
+                        <field name="age_61_90"/>
+                        <field name="age_91_120"/>
+                        <field name="older"/>
+                        <field name="total"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wesprime_aged_partner_balance_wizard" model="ir.actions.act_window">
+        <field name="name">Aged Partner Balance</field>
+        <field name="res_model">wesprime.aged.partner.balance.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wesprime_aged_partner_balance_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,35 @@
+.o_form_view .wesprime-dashboard-shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 18px;
+}
+
+.o_form_view .wesprime-dashboard-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 0 0 18px;
+}
+
+.o_form_view .wesprime-dashboard-kpi {
+    border: 1px solid #d8dee6;
+    border-radius: 6px;
+    padding: 12px 14px;
+    background: #ffffff;
+}
+
+.o_form_view .wesprime-dashboard-kpi > span {
+    display: block;
+    color: #5f6b7a;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.o_form_view .wesprime-dashboard-kpi .wesprime-dashboard-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+}

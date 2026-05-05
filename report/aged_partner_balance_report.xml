@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_aged_partner_balance_pdf" model="ir.actions.report">
+        <field name="name">Aged Partner Balance</field>
+        <field name="model">wesprime.aged.partner.balance.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">wesprime_account_reports.report_aged_partner_balance_pdf</field>
+        <field name="report_file">wesprime_account_reports.report_aged_partner_balance_pdf</field>
+        <field name="print_report_name">'Aged Partner Balance - %s' % (object.company_id.name)</field>
+    </record>
+
+    <template id="report_aged_partner_balance_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Aged Partner Balance</h2>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <strong>Company:</strong>
+                                <span t-field="doc.company_id"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <strong>As of:</strong>
+                                <span t-esc="doc.as_of_date"/>
+                            </div>
+                        </div>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Partner</th>
+                                    <th class="text-end">Not Due</th>
+                                    <th class="text-end">1-30</th>
+                                    <th class="text-end">31-60</th>
+                                    <th class="text-end">61-90</th>
+                                    <th class="text-end">91-120</th>
+                                    <th class="text-end">Older</th>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.result_line_ids" t-as="line">
+                                    <td><span t-field="line.partner_id"/></td>
+                                    <td class="text-end"><span t-field="line.not_due" t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.age_1_30" t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.age_31_60" t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.age_61_90" t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.age_91_120" t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.older" t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.total" t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-end"><strong>Total</strong></td>
+                                    <td class="text-end"><strong t-esc="'{:,.2f}'.format(sum(doc.result_line_ids.mapped('not_due')))"/></td>
+                                    <td class="text-end"><strong t-esc="'{:,.2f}'.format(sum(doc.result_line_ids.mapped('age_1_30')))"/></td>
+                                    <td class="text-end"><strong t-esc="'{:,.2f}'.format(sum(doc.result_line_ids.mapped('age_31_60')))"/></td>
+                                    <td class="text-end"><strong t-esc="'{:,.2f}'.format(sum(doc.result_line_ids.mapped('age_61_90')))"/></td>
+                                    <td class="text-end"><strong t-esc="'{:,.2f}'.format(sum(doc.result_line_ids.mapped('age_91_120')))"/></td>
+                                    <td class="text-end"><strong t-esc="'{:,.2f}'.format(sum(doc.result_line_ids.mapped('older')))"/></td>
+                                    <td class="text-end"><strong t-esc="'{:,.2f}'.format(sum(doc.result_line_ids.mapped('total')))"/></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

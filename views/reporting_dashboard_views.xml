@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wesprime_reporting_dashboard_form" model="ir.ui.view">
+        <field name="name">wesprime.reporting.dashboard.form</field>
+        <field name="model">wesprime.reporting.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Reporting Dashboard" create="false" delete="false">
+                <header>
+                    <button name="action_refresh" string="Refresh" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Reporting Dashboard</h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="as_of_date"/>
+                        </group>
+                    </group>
+
+                    <div class="wesprime-dashboard-shortcuts">
+                        <button name="action_open_partner_ledger" type="object" string="Partner Ledger" class="btn btn-secondary"/>
+                        <button name="action_open_bank_book" type="object" string="Bank Book" class="btn btn-secondary"/>
+                        <button name="action_open_cash_book" type="object" string="Cash Book" class="btn btn-secondary"/>
+                        <button name="action_open_day_book" type="object" string="Day Book" class="btn btn-secondary"/>
+                        <button name="action_open_aged_partner_balance" type="object" string="Aged Partner Balance" class="btn btn-secondary"/>
+                    </div>
+
+                    <div class="wesprime-dashboard-kpis">
+                        <div class="wesprime-dashboard-kpi">
+                            <span>Total Receivables</span>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="total_receivables" widget="monetary" readonly="1" class="wesprime-dashboard-value"/>
+                        </div>
+                        <div class="wesprime-dashboard-kpi">
+                            <span>Total Payables</span>
+                            <field name="total_payables" widget="monetary" readonly="1" class="wesprime-dashboard-value"/>
+                        </div>
+                        <div class="wesprime-dashboard-kpi">
+                            <span>Bank Balance</span>
+                            <field name="bank_balance_total" widget="monetary" readonly="1" class="wesprime-dashboard-value"/>
+                        </div>
+                        <div class="wesprime-dashboard-kpi">
+                            <span>Cash Balance</span>
+                            <field name="cash_balance_total" widget="monetary" readonly="1" class="wesprime-dashboard-value"/>
+                        </div>
+                        <div class="wesprime-dashboard-kpi">
+                            <span>Customer Invoice Totals</span>
+                            <field name="customer_invoice_total" widget="monetary" readonly="1" class="wesprime-dashboard-value"/>
+                        </div>
+                        <div class="wesprime-dashboard-kpi">
+                            <span>Vendor Bill Totals</span>
+                            <field name="vendor_bill_total" widget="monetary" readonly="1" class="wesprime-dashboard-value"/>
+                        </div>
+                    </div>
+
+                    <notebook>
+                        <page string="Bank Balances">
+                            <field name="bank_balance_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="journal_id"/>
+                                    <field name="balance" sum="Total Bank Balance"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Cash Balances">
+                            <field name="cash_balance_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="journal_id"/>
+                                    <field name="balance" sum="Total Cash Balance"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Top Customers">
+                            <field name="top_customer_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="partner_id"/>
+                                    <field name="amount_total" sum="Total"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Top Vendors">
+                            <field name="top_vendor_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="partner_id"/>
+                                    <field name="amount_total" sum="Total"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Recent Journal Entries">
+                            <field name="recent_move_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="date"/>
+                                    <field name="move_id"/>
+                                    <field name="journal_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="ref"/>
+                                    <field name="amount_total"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wesprime_reporting_dashboard_server" model="ir.actions.server">
+        <field name="name">Reporting Dashboard</field>
+        <field name="model_id" ref="model_wesprime_reporting_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">action = env['wesprime.reporting.dashboard'].action_open_dashboard()</field>
+    </record>
+</odoo>

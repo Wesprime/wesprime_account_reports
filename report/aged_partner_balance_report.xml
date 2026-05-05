@@ -4,12 +4,12 @@
         <field name="name">Aged Partner Balance</field>
         <field name="model">wesprime.aged.partner.balance.wizard</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">wesprime_account_reports.report_aged_partner_balance_pdf</field>
-        <field name="report_file">wesprime_account_reports.report_aged_partner_balance_pdf</field>
+        <field name="report_name">war.aged_pb_pdf</field>
+        <field name="report_file">war.aged_pb_pdf</field>
         <field name="print_report_name">'Aged Partner Balance - %s' % (object.company_id.name)</field>
     </record>
 
-    <template id="report_aged_partner_balance_pdf">
+    <template id="report_aged_partner_balance_pdf" key="war.aged_pb_pdf">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
                 <t t-call="web.external_layout">

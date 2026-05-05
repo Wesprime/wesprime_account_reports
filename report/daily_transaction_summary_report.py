@@ -2,7 +2,7 @@ from odoo import api, models
 
 
 class ReportWesprimeDailyTransactionSummary(models.AbstractModel):
-    _name = "report.wesprime_account_reports.report_daily_transaction_summary_pdf"
+    _name = "report.war.daily_txn_pdf"
     _description = "Wesprime Daily Transaction Summary PDF"
 
     @api.model

@@ -2,7 +2,7 @@ from odoo import api, models
 
 
 class ReportWesprimeAgedPartnerBalance(models.AbstractModel):
-    _name = "report.wesprime_account_reports.report_aged_partner_balance_pdf"
+    _name = "report.war.aged_pb_pdf"
     _description = "Wesprime Aged Partner Balance PDF"
 
     @api.model

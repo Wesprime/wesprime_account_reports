@@ -5,11 +5,11 @@
     "category": "Accounting/Accounting",
     "author": "Wesprime",
     "license": "LGPL-3",
-    "depends": ["account", "web"],
+    "depends": ["account", "base_accounting_kit", "web"],
     "data": [
         "security/ir.model.access.csv",
+        "data/cleanup_partner_ledger.xml",
         "report/aged_partner_balance_report.xml",
-        "report/partner_ledger_report.xml",
         "report/daily_transaction_summary_report.xml",
         "views/aged_partner_balance_views.xml",
         "views/partner_ledger_views.xml",

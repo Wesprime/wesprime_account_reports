@@ -1,6 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_wesprime_partner_ledger_wizard,access.wesprime.partner.ledger.wizard,model_wesprime_partner_ledger_wizard,account.group_account_readonly,1,1,1,1
-access_wesprime_partner_ledger_line,access.wesprime.partner.ledger.line,model_wesprime_partner_ledger_line,account.group_account_readonly,1,1,1,1
 access_wesprime_daily_transaction_summary_wizard,access.wesprime.daily.transaction.summary.wizard,model_wesprime_daily_transaction_summary_wizard,account.group_account_readonly,1,1,1,1
 access_wesprime_daily_transaction_summary_line,access.wesprime.daily.transaction.summary.line,model_wesprime_daily_transaction_summary_line,account.group_account_readonly,1,1,1,1
 access_wesprime_aged_partner_balance_wizard,access.wesprime.aged.partner.balance.wizard,model_wesprime_aged_partner_balance_wizard,account.group_account_readonly,1,1,1,1

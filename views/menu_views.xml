@@ -19,7 +19,7 @@
         id="menu_wesprime_partner_ledger"
         name="Partner Ledger"
         parent="menu_wesprime_daily_reports"
-        action="action_wesprime_partner_ledger_wizard"
+        action="base_accounting_kit.action_partner_leadger"
         groups="account.group_account_readonly"
         sequence="10"/>
 

@@ -1,93 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_wesprime_partner_ledger_wizard_form" model="ir.ui.view">
-        <field name="name">wesprime.partner.ledger.wizard.form</field>
-        <field name="model">wesprime.partner.ledger.wizard</field>
+    <record id="war_partner_ledger_view_inherit" model="ir.ui.view">
+        <field name="name">war.partner.ledger.view.inherit</field>
+        <field name="model">account.report.partner.ledger</field>
+        <field name="inherit_id" ref="base_accounting_kit.account_report_partner_ledger_view"/>
         <field name="arch" type="xml">
-            <form string="Partner Ledger">
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="company_id" options="{'no_create': True}"/>
-                            <field name="date_from"/>
-                            <field name="date_to"/>
-                            <field name="target_move"/>
-                        </group>
-                        <group>
-                            <field name="journal_ids" widget="many2many_tags"/>
-                            <field name="partner_ids" widget="many2many_tags"/>
-                        </group>
-                    </group>
-                </sheet>
+            <xpath expr="//field[@name='result_selection']" position="after">
+                <field name="partner_ids" widget="many2many_tags"/>
+            </xpath>
+            <xpath expr="//footer" position="replace">
                 <footer>
-                    <button name="action_view" string="View" type="object" class="btn-primary"/>
-                    <button name="action_print_pdf" string="Print PDF" type="object" class="btn-secondary"/>
-                    <button name="action_print_xlsx" string="Print Excel" type="object" class="btn-secondary"/>
+                    <button name="action_view_partner_ledger" string="View" type="object" class="btn-primary"/>
+                    <button name="check_report" string="Print" type="object" class="btn-secondary" default_focus="1"/>
+                    <button name="action_export_partner_ledger_xlsx" string="Print Excel" type="object" class="btn-secondary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
-            </form>
+            </xpath>
         </field>
-    </record>
-
-    <record id="view_wesprime_partner_ledger_line_tree" model="ir.ui.view">
-        <field name="name">wesprime.partner.ledger.line.tree</field>
-        <field name="model">wesprime.partner.ledger.line</field>
-        <field name="arch" type="xml">
-            <tree string="Partner Ledger" create="false" edit="false">
-                <field name="company_currency_id" invisible="1"/>
-                <field name="currency_id" invisible="1"/>
-                <field name="date"/>
-                <field name="partner_id"/>
-                <field name="journal_id"/>
-                <field name="move_name"/>
-                <field name="account_id"/>
-                <field name="label"/>
-                <field name="debit" sum="Total Debit"/>
-                <field name="credit" sum="Total Credit"/>
-                <field name="line_balance" sum="Total Balance"/>
-                <field name="balance"/>
-                <field name="amount_currency"/>
-            </tree>
-        </field>
-    </record>
-
-    <record id="view_wesprime_partner_ledger_line_form" model="ir.ui.view">
-        <field name="name">wesprime.partner.ledger.line.form</field>
-        <field name="model">wesprime.partner.ledger.line</field>
-        <field name="arch" type="xml">
-            <form string="Partner Ledger Line" create="false" edit="false">
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="date"/>
-                            <field name="partner_id"/>
-                            <field name="journal_id"/>
-                            <field name="move_id"/>
-                            <field name="move_name"/>
-                            <field name="account_id"/>
-                        </group>
-                        <group>
-                            <field name="company_currency_id" invisible="1"/>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="label"/>
-                            <field name="ref"/>
-                            <field name="debit"/>
-                            <field name="credit"/>
-                            <field name="line_balance"/>
-                            <field name="balance"/>
-                            <field name="amount_currency"/>
-                        </group>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="action_wesprime_partner_ledger_wizard" model="ir.actions.act_window">
-        <field name="name">Partner Ledger</field>
-        <field name="res_model">wesprime.partner.ledger.wizard</field>
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="view_wesprime_partner_ledger_wizard_form"/>
-        <field name="target">new</field>
     </record>
 </odoo>

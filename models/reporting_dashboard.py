@@ -284,18 +284,13 @@ class WesprimeReportingDashboard(models.TransientModel):
         return {"type": "ir.actions.client", "tag": "reload"}
 
     def action_open_partner_ledger(self):
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Partner Ledger"),
-            "res_model": "wesprime.partner.ledger.wizard",
-            "view_mode": "form",
-            "view_id": self.env.ref("wesprime_account_reports.view_wesprime_partner_ledger_wizard_form").id,
-            "target": "new",
-            "context": {
-                "default_company_id": self.company_id.id,
-                "default_date_to": self.as_of_date,
-            },
+        self.ensure_one()
+        action = self.env.ref("base_accounting_kit.action_partner_leadger").read()[0]
+        action["context"] = {
+            "default_company_id": self.company_id.id,
+            "default_date_to": self.as_of_date,
         }
+        return action
 
     def action_open_bank_book(self):
         self.ensure_one()

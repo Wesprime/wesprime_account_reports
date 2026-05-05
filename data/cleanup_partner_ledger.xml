@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <delete model="ir.actions.report" search="[('report_name', '=', 'wesprime_account_reports.report_partner_ledger_pdf')]"/>
+    <delete model="ir.actions.act_window" search="[('res_model', '=', 'wesprime.partner.ledger.wizard')]"/>
+    <delete model="ir.ui.view" search="[('model', 'in', ['wesprime.partner.ledger.wizard', 'wesprime.partner.ledger.line'])]"/>
+    <delete model="ir.ui.view" search="[('key', '=', 'wesprime_account_reports.report_partner_ledger_pdf')]"/>
+    <delete model="ir.model.access" search="[('model_id.model', 'in', ['wesprime.partner.ledger.wizard', 'wesprime.partner.ledger.line'])]"/>
+</odoo>

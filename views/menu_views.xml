@@ -32,6 +32,14 @@
         sequence="20"/>
 
     <menuitem
+        id="menu_war_branch_dash"
+        name="Daily Branch Control Dashboard"
+        parent="menu_wesprime_daily_reports"
+        action="action_war_branch_dash_server"
+        groups="account.group_account_readonly"
+        sequence="25"/>
+
+    <menuitem
         id="menu_wesprime_aged_partner_balance"
         name="Aged Partner Balance"
         parent="menu_wesprime_daily_reports"

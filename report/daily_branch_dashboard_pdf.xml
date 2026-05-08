@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_war_branch_dash_pdf" model="ir.actions.report">
+        <field name="name">Daily Branch Control Dashboard</field>
+        <field name="model">wesprime.daily.branch.dashboard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">war.branch_dash_pdf</field>
+        <field name="report_file">war.branch_dash_pdf</field>
+        <field name="print_report_name">'Daily Branch Control Dashboard - %s' % (object.company_id.name)</field>
+    </record>
+
+    <template id="report_war_branch_dash_pdf" key="war.branch_dash_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Daily Branch Control Dashboard</h2>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <strong>Company:</strong>
+                                <span t-field="doc.company_id"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <strong>Period:</strong>
+                                <span t-esc="doc.date_from"/>
+                                <span> - </span>
+                                <span t-esc="doc.date_to"/>
+                            </div>
+                        </div>
+
+                        <h4>Summary</h4>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Branch</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Sales Qty</th>
+                                    <th class="text-end">Sales Value</th>
+                                    <th class="text-end">Cash</th>
+                                    <th class="text-end">Bank/UPI</th>
+                                    <th class="text-end">Credit</th>
+                                    <th class="text-end">Cash Diff</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.summary_line_ids" t-as="line">
+                                    <td><span t-field="line.branch_ref_id"/></td>
+                                    <td><span t-field="line.date"/></td>
+                                    <td class="text-end"><span t-esc="'{:,.2f}'.format(line.sales_quantity)"/></td>
+                                    <td class="text-end"><span t-field="line.sales_value" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.cash_sales" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.bank_sales" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.credit_sales" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.cash_difference" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Sales Summary</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Branch</th>
+                                    <th>Date</th>
+                                    <th>Product</th>
+                                    <th class="text-end">Qty</th>
+                                    <th class="text-end">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.sales_line_ids" t-as="line">
+                                    <td><span t-field="line.branch_ref_id"/></td>
+                                    <td><span t-field="line.date"/></td>
+                                    <td><span t-field="line.product_group"/></td>
+                                    <td class="text-end"><span t-esc="'{:,.2f}'.format(line.quantity)"/></td>
+                                    <td class="text-end"><span t-field="line.value" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Payment Split</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Branch</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Cash</th>
+                                    <th class="text-end">Bank/UPI</th>
+                                    <th class="text-end">Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.payment_line_ids" t-as="line">
+                                    <td><span t-field="line.branch_ref_id"/></td>
+                                    <td><span t-field="line.date"/></td>
+                                    <td class="text-end"><span t-field="line.cash_sales" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.bank_sales" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.credit_sales" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Cash Control</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Branch</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Opening</th>
+                                    <th class="text-end">Cash Sales</th>
+                                    <th class="text-end">Expenses</th>
+                                    <th class="text-end">Expected</th>
+                                    <th class="text-end">Actual</th>
+                                    <th class="text-end">Difference</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.cash_line_ids" t-as="line">
+                                    <td><span t-field="line.branch_ref_id"/></td>
+                                    <td><span t-field="line.date"/></td>
+                                    <td class="text-end"><span t-field="line.opening_cash" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.cash_sales_system" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.expenses_system" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.closing_cash_expected" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.actual_closing_cash" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.difference" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Bank Control</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Branch</th>
+                                    <th>Date</th>
+                                    <th class="text-end">System Bank/UPI</th>
+                                    <th class="text-end">Statement</th>
+                                    <th class="text-end">Difference</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.bank_line_ids" t-as="line">
+                                    <td><span t-field="line.branch_ref_id"/></td>
+                                    <td><span t-field="line.date"/></td>
+                                    <td class="text-end"><span t-field="line.bank_sales_system" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.bank_statement_total" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.bank_difference" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Credit Control</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Branch</th>
+                                    <th>Date</th>
+                                    <th class="text-end">New Credit</th>
+                                    <th class="text-end">Outstanding</th>
+                                    <th class="text-end">Overdue</th>
+                                    <th class="text-end">Customers</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.credit_line_ids" t-as="line">
+                                    <td><span t-field="line.branch_ref_id"/></td>
+                                    <td><span t-field="line.date"/></td>
+                                    <td class="text-end"><span t-field="line.new_credit" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.total_outstanding" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-field="line.overdue_amount" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><span t-esc="line.overdue_customer_count"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Inventory Snapshot</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Branch</th>
+                                    <th>Date</th>
+                                    <th>Product</th>
+                                    <th class="text-end">Opening</th>
+                                    <th class="text-end">Received</th>
+                                    <th class="text-end">Sold</th>
+                                    <th class="text-end">Closing</th>
+                                    <th>Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.inventory_line_ids" t-as="line">
+                                    <td><span t-field="line.branch_ref_id"/></td>
+                                    <td><span t-field="line.date"/></td>
+                                    <td><span t-field="line.product_group"/></td>
+                                    <td class="text-end"><span t-esc="'{:,.2f}'.format(line.opening_stock)"/></td>
+                                    <td class="text-end"><span t-esc="'{:,.2f}'.format(line.received)"/></td>
+                                    <td class="text-end"><span t-esc="'{:,.2f}'.format(line.sold)"/></td>
+                                    <td class="text-end"><span t-esc="'{:,.2f}'.format(line.closing_stock)"/></td>
+                                    <td><span t-esc="line.note or ''"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

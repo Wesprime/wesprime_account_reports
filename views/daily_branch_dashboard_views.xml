@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_war_branch_dash_form" model="ir.ui.view">
+        <field name="name">wesprime.daily.branch.dashboard.form</field>
+        <field name="model">wesprime.daily.branch.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Daily Branch Control Dashboard" create="false" delete="false">
+                <header>
+                    <button name="action_refresh" string="Refresh" type="object" class="btn-primary"/>
+                    <button name="action_open_cash_controls" string="Open Cash Control Entries" type="object" class="btn-secondary"/>
+                    <button name="action_export_xlsx" string="Export Excel" type="object" class="btn-secondary"/>
+                    <button name="action_print_pdf" string="Print PDF" type="object" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Daily Branch Control Dashboard</h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="branch_ids" widget="many2many_tags"/>
+                            <field name="journal_ids" widget="many2many_tags"/>
+                            <field name="product_category_ids" widget="many2many_tags"/>
+                            <field name="partner_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="branch_note" readonly="1"/>
+                        <field name="stock_note" readonly="1"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Summary">
+                            <field name="summary_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false" decoration-danger="cash_difference != 0">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="branch_ref_id"/>
+                                    <field name="date"/>
+                                    <field name="sales_quantity" sum="Total Qty"/>
+                                    <field name="sales_value" sum="Total Sales"/>
+                                    <field name="cash_sales" sum="Total Cash"/>
+                                    <field name="bank_sales" sum="Total Bank/UPI"/>
+                                    <field name="credit_sales" sum="Total Credit"/>
+                                    <field name="cash_difference" sum="Cash Difference"/>
+                                    <field name="new_credit" sum="New Credit"/>
+                                    <field name="total_outstanding" sum="Outstanding"/>
+                                    <field name="overdue_customer_count"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Sales Summary">
+                            <field name="sales_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="branch_ref_id"/>
+                                    <field name="date"/>
+                                    <field name="product_group"/>
+                                    <field name="quantity" sum="Quantity"/>
+                                    <field name="value" sum="Value"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Payment Split">
+                            <field name="payment_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="branch_ref_id"/>
+                                    <field name="date"/>
+                                    <field name="cash_sales" sum="Cash Sales"/>
+                                    <field name="bank_sales" sum="Bank/UPI Sales"/>
+                                    <field name="credit_sales" sum="Credit Sales"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Cash Control">
+                            <field name="cash_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false" decoration-danger="difference != 0" decoration-success="difference == 0">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="branch_ref_id"/>
+                                    <field name="date"/>
+                                    <field name="opening_cash"/>
+                                    <field name="cash_sales_system" sum="Cash Sales"/>
+                                    <field name="expenses_system" sum="Expenses"/>
+                                    <field name="closing_cash_expected"/>
+                                    <field name="actual_closing_cash"/>
+                                    <field name="difference" sum="Difference"/>
+                                    <field name="cash_control_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Bank Control">
+                            <field name="bank_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false" decoration-danger="bank_difference != 0" decoration-success="bank_difference == 0">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="branch_ref_id"/>
+                                    <field name="date"/>
+                                    <field name="bank_sales_system" sum="System Bank/UPI"/>
+                                    <field name="bank_statement_total" sum="Bank Statement"/>
+                                    <field name="bank_difference" sum="Difference"/>
+                                    <field name="cash_control_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Credit Control">
+                            <field name="credit_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="branch_ref_id"/>
+                                    <field name="date"/>
+                                    <field name="new_credit" sum="New Credit"/>
+                                    <field name="total_outstanding" sum="Outstanding"/>
+                                    <field name="overdue_amount" sum="Overdue"/>
+                                    <field name="overdue_customer_count"/>
+                                    <field name="overdue_customer_names"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Inventory Snapshot">
+                            <field name="inventory_line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="branch_ref_id"/>
+                                    <field name="date"/>
+                                    <field name="product_group"/>
+                                    <field name="opening_stock" sum="Opening"/>
+                                    <field name="received" sum="Received"/>
+                                    <field name="sold" sum="Sold"/>
+                                    <field name="closing_stock" sum="Closing"/>
+                                    <field name="note"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_war_branch_dash_server" model="ir.actions.server">
+        <field name="name">Daily Branch Control Dashboard</field>
+        <field name="model_id" ref="model_wesprime_daily_branch_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">action = env['wesprime.daily.branch.dashboard'].action_open_dashboard()</field>
+    </record>
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_war_cash_ctrl_tree" model="ir.ui.view">
+        <field name="name">wesprime.branch.cash.control.tree</field>
+        <field name="model">wesprime.branch.cash.control</field>
+        <field name="arch" type="xml">
+            <tree string="Cash Control" decoration-danger="difference != 0" decoration-success="difference == 0">
+                <field name="currency_id" invisible="1"/>
+                <field name="date"/>
+                <field name="branch_ref_id"/>
+                <field name="company_id"/>
+                <field name="opening_cash"/>
+                <field name="cash_sales_system"/>
+                <field name="expenses_system"/>
+                <field name="closing_cash_expected"/>
+                <field name="actual_closing_cash"/>
+                <field name="difference"/>
+                <field name="bank_sales_system"/>
+                <field name="bank_statement_total"/>
+                <field name="bank_difference"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_war_cash_ctrl_form" model="ir.ui.view">
+        <field name="name">wesprime.branch.cash.control.form</field>
+        <field name="model">wesprime.branch.cash.control</field>
+        <field name="arch" type="xml">
+            <form string="Cash Control">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="branch_ref_id" placeholder="Branch"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="date"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="opening_cash"/>
+                            <field name="actual_closing_cash"/>
+                            <field name="difference" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="System Cash">
+                        <field name="cash_sales_system" readonly="1"/>
+                        <field name="expenses_system" readonly="1"/>
+                        <field name="closing_cash_expected" readonly="1"/>
+                    </group>
+                    <group string="Bank Control">
+                        <field name="bank_sales_system" readonly="1"/>
+                        <field name="bank_statement_total"/>
+                        <field name="bank_difference" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="notes" placeholder="Cash count notes, explanations, or approval comments."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_war_cash_ctrl" model="ir.actions.act_window">
+        <field name="name">Cash Control Entries</field>
+        <field name="res_model">wesprime.branch.cash.control</field>
+        <field name="view_mode">tree,form</field>
+        <field name="views" eval="[(ref('view_war_cash_ctrl_tree'), 'tree'), (ref('view_war_cash_ctrl_form'), 'form')]"/>
+    </record>
+</odoo>
